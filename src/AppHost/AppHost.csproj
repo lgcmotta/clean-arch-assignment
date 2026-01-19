@@ -1,0 +1,24 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <UserSecretsId>1abc70a8-c3d0-42a9-a170-6eee41fa8d9f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.MongoDB" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+    <PackageReference Include="Scalar.Aspire" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".\Keys\keyfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\OrderManagement.WebApi\OrderManagement.WebApi.csproj" />
+  </ItemGroup>
+
+</Project>

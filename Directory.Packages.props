@@ -1,0 +1,32 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Asp.Versioning.Http" Version="8.1.1" />
+    <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
+    <PackageVersion Include="Aspire.Hosting.MongoDB" Version="13.1.0" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.1.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageVersion Include="Hashids.net" Version="1.7.0" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />
+    <PackageVersion Include="MediatR" Version="14.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.4.3" />
+    <PackageVersion Include="MongoDB.Driver" Version="3.6.0" />
+    <PackageVersion Include="Scalar.Aspire" Version="0.8.20" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.12.11" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.2" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.1.0" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.1.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.14.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.14.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.14.0" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AppHost/AppHost.csproj" />
+    <Project Path="src/OrderManagement.Application/OrderManagement.Application.csproj" />
+    <Project Path="src/OrderManagement.Domain/OrderManagement.Domain.csproj" />
+    <Project Path="src/OrderManagement.Infrastructure.Persistence/OrderManagement.Infrastructure.Persistence.csproj" />
+    <Project Path="src/OrderManagement.Infrastructure/OrderManagement.Infrastructure.csproj" />
+    <Project Path="src/OrderManagement.WebApi/OrderManagement.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderManagement.Domain.Tests/OrderManagement.Domain.Tests.csproj" />
+  </Folder>
+</Solution>
