@@ -9,12 +9,18 @@ internal sealed class CreateCustomerCommandValidator : AbstractValidator<CreateC
     public CreateCustomerCommandValidator()
     {
         RuleFor(command => command.Name)
-            .NotEmpty();
+            .NotEmpty()
+            .WithName("name")
+            .WithMessage("'name' must not be null, empty or white-space.");
 
         RuleFor(command => command.Email)
-            .NotEmpty();
+            .NotEmpty()
+            .WithName("email")
+            .WithMessage("'email' must not be null, empty or white-space.");
 
         RuleFor(command => command.Phone)
-            .NotEmpty();
+            .NotEmpty()
+            .WithName("phone")
+            .WithMessage("'phone' must not be null, empty or white-space.");
     }
 }

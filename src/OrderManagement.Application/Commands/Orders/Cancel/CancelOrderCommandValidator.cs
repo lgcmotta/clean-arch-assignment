@@ -8,7 +8,14 @@ internal sealed class CancelOrderCommandValidator : AbstractValidator<CancelOrde
 {
     public CancelOrderCommandValidator()
     {
-        RuleFor(command => command.CustomerId).NotEmpty();
-        RuleFor(command => command.OrderId).NotEmpty();
+        RuleFor(command => command.CustomerId)
+            .NotEmpty()
+            .WithName("customerId")
+            .WithMessage("'customerId' must not be null, empty or white-space.");
+
+        RuleFor(command => command.OrderId)
+            .NotEmpty()
+            .WithName("orderId")
+            .WithMessage("'orderId' must not be null, empty or white-space.");
     }
 }

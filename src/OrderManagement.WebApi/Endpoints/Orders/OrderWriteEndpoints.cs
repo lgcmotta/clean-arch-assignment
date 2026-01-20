@@ -22,6 +22,7 @@ internal static class OrderWriteEndpoints
                 .MapToApiVersion(version)
                 .Produces<ApiResponse<CreateOrderResponse>>(contentType: MediaTypeNames.Application.Json)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status404NotFound, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
 
             return builder;
@@ -37,6 +38,7 @@ internal static class OrderWriteEndpoints
                 .Produces<ApiResponse<UpdateOrderResponse>>(contentType: MediaTypeNames.Application.Json)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status404NotFound, contentType: MediaTypeNames.Application.ProblemJson)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status409Conflict, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
 
             return builder;

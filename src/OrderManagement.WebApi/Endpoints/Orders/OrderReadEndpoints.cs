@@ -21,6 +21,7 @@ internal static class OrderReadEndpoints
                 .WithTags("orders")
                 .MapToApiVersion(version)
                 .Produces<PagedApiResponse<IEnumerable<OrderReadModel>>>(contentType: MediaTypeNames.Application.Json)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
 
             return builder;

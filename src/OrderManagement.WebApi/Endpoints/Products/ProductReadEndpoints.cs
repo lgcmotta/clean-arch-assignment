@@ -20,6 +20,7 @@ internal static class ProductReadEndpoints
                 .WithTags("products")
                 .MapToApiVersion(version)
                 .Produces<PagedApiResponse<IEnumerable<ProductReadModel>>>(contentType: MediaTypeNames.Application.Json)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
 
             return builder;
