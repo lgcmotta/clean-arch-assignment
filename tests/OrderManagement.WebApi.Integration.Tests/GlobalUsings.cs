@@ -1,0 +1,33 @@
+// Global using directives
+
+global using Bogus;
+global using JetBrains.Annotations;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Testing;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using OrderManagement.Application.Commands.Customers.Create;
+global using OrderManagement.Application.Commands.Orders.Cancel;
+global using OrderManagement.Application.Commands.Orders.Create;
+global using OrderManagement.Application.Commands.Orders.Update;
+global using OrderManagement.Application.Commands.Products.CreateProduct;
+global using OrderManagement.Application.Models.Customer;
+global using OrderManagement.Application.Models.Orders;
+global using OrderManagement.Application.Models.Products;
+global using OrderManagement.Application.Repositories.Customers;
+global using OrderManagement.Application.Repositories.Orders;
+global using OrderManagement.Application.Repositories.Products;
+global using OrderManagement.Domain.Aggregates.Customers;
+global using OrderManagement.Domain.Aggregates.Orders;
+global using OrderManagement.Domain.Aggregates.Orders.ValueObjects;
+global using OrderManagement.Domain.Aggregates.Products;
+global using OrderManagement.Infrastructure.Persistence.Contexts;
+global using OrderManagement.WebApi.Integration.Tests;
+global using OrderManagement.WebApi.Responses;
+global using Shouldly;
+global using System.Net;
+global using System.Net.Http.Json;
+global using Testcontainers.MongoDb;
+global using Testcontainers.MsSql;
+global using IHashids = HashidsNet.IHashids;

@@ -86,25 +86,25 @@ public static class ServiceCollectionExtensions
 
         public IServiceCollection AddCQRS()
         {
-            services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
+            services.AddValidatorsFromAssemblyContaining<ApplicationAssemblyMarker>(includeInternalTypes: true);
 
             return services.AddMediatR(options =>
             {
                 options.AddOpenBehavior(typeof(ValidationBehavior<,>));
                 options.AddOpenBehavior(typeof(DomainEventPublisherBehavior<,>));
-                options.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly);
+                options.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
                 options.NotificationPublisherType = typeof(TaskWhenAllPublisher);
             });
         }
 
-        public IServiceCollection AddMongoDbClient(IConfiguration configuration)
+        public IServiceCollection AddMongoDbClient()
         {
-            var connectionString = configuration.GetConnectionString("MongoDB");
-
-            ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
-
-            services.AddSingleton<IMongoClient>(_ =>
+            services.AddSingleton<IMongoClient>(provider =>
             {
+                IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
+
+                var connectionString = configuration.GetConnectionString("MongoDB");
+
                 var settings = MongoClientSettings.FromConnectionString(connectionString);
 
                 settings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber());
@@ -115,14 +115,16 @@ public static class ServiceCollectionExtensions
             return services;
         }
 
-        public IServiceCollection AddAppDbContext(IConfiguration configuration)
+        public IServiceCollection AddAppDbContext()
         {
-            var connectionString = configuration.GetConnectionString("SqlServer");
-
-            ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
-
             services.AddDbContext<AppDbContext>((provider, options) =>
             {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+
+                var connectionString = configuration.GetConnectionString("SqlServer");
+
+                ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
+
                 options.UseSqlServer(connectionString, (sql) =>
                 {
                     sql.MigrationsHistoryTable("__EFMigrationsHistory", "maintenance");

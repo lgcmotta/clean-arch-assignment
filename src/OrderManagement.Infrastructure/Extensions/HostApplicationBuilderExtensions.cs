@@ -86,14 +86,19 @@ public static class HostApplicationBuilderExtensions
             builder.Services.AddHostedService<LivenessBackgroundService>();
             builder.Services.AddSingleton<LivenessHealthCheck>();
 
-            string? connectionString = builder.Configuration.GetConnectionString("SqlServer");
-
-            ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
-
             builder.Services.AddHealthChecks()
                 .AddCheck<LivenessHealthCheck>("liveness", tags: ["alive"])
                 .AddMongoDb(tags: ["ready"])
-                .AddSqlServer(connectionString, tags: ["ready"]);
+                .AddSqlServer(connectionStringFactory: provider =>
+                {
+                    var configuration = provider.GetRequiredService<IConfiguration>();
+
+                    var connectionString = configuration.GetConnectionString("SqlServer");
+
+                    ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
+
+                    return connectionString;
+                }, tags: ["ready"]);
 
             return builder;
         }

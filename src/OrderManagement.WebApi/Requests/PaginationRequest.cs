@@ -5,8 +5,17 @@ using OrderManagement.Application.Models.Shared;
 namespace OrderManagement.WebApi.Requests;
 
 [UsedImplicitly]
-public record PaginationRequest(
-    [property: FromQuery] int Page = 1,
-    [property: FromQuery] int Size = 50,
-    [property: FromQuery] SortingOrder Sort = SortingOrder.ASC,
-    [property: FromQuery] string? SortBy = null);
+public record PaginationRequest
+{
+    [FromQuery]
+    public int Page { get; init; } = 1;
+
+    [FromQuery]
+    public int Size { get; init; } = 50;
+
+    [FromQuery]
+    public SortingOrder Sort { get; init; } = SortingOrder.ASC;
+
+    [FromQuery]
+    public string? SortBy { get; init; } = string.Empty;
+}

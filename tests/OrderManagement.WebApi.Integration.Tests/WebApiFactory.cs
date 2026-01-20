@@ -1,19 +1,15 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Testcontainers.MongoDb;
-using Testcontainers.MsSql;
+[assembly: AssemblyFixture(typeof(WebApiFactory))]
 
 namespace OrderManagement.WebApi.Integration.Tests;
 
-public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
+[UsedImplicitly]
+public sealed class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly MsSqlContainer _sql = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2025-latest")
-        .WithAcceptLicenseAgreement(true)
         .WithPortBinding(1433, assignRandomHostPort: true)
         .Build();
 
     private readonly MongoDbContainer _mongo = new MongoDbBuilder("mirror.gcr.io/mongo:8")
-        .WithAcceptLicenseAgreement(true)
         .WithPortBinding(27017, assignRandomHostPort: true)
         .Build();
 
@@ -25,17 +21,21 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseSetting("ConnectionStrings__SqlServer", _sql.GetConnectionString());
-        builder.UseSetting("ConnectionStrings__MongoDB", _mongo.GetConnectionString());
+        builder.UseSetting("ConnectionStrings:SqlServer", _sql.GetConnectionString());
+        builder.UseSetting("ConnectionStrings:MongoDB", _mongo.GetConnectionString());
+
+        builder.ConfigureAppConfiguration(configuration =>
+        {
+            configuration.AddInMemoryCollection([
+                new KeyValuePair<string, string?>("ConnectionStrings:SqlServer", _sql.GetConnectionString()),
+                new KeyValuePair<string, string?>("ConnectionStrings:MongoDB", _mongo.GetConnectionString())
+            ]);
+        });
     }
 
     public HttpClient CreateHttpClient()
     {
-        var options = new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false,
-            BaseAddress = Server.BaseAddress
-        };
+        var options = new WebApplicationFactoryClientOptions { AllowAutoRedirect = false, BaseAddress = Server.BaseAddress };
 
         return CreateClient(options);
     }
