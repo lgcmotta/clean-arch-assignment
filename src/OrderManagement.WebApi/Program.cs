@@ -44,6 +44,7 @@ api.MapPatchOrders(v1);
 api.MapDeleteOrders(v1);
 api.MapGetOrders(v1);
 api.MapPostCustomer(v1);
+api.MapGetCustomers(v1);
 
 if (app.Environment.IsDevelopment())
 {
