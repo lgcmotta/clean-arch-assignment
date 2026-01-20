@@ -27,4 +27,19 @@ public record OrderStatus : Enumeration
     public static OrderStatus Returned => new(8, nameof(Returned));
 
     public static OrderStatus Cancelled => new(9, nameof(Cancelled));
+
+    public static readonly IReadOnlyDictionary<OrderStatus, IReadOnlySet<OrderStatus>> Transitions =
+        new Dictionary<OrderStatus, IReadOnlySet<OrderStatus>>
+        {
+            [Created] = new HashSet<OrderStatus> { PendingPayment, Cancelled },
+            [PendingPayment] = new HashSet<OrderStatus> { PaymentApproved, PaymentRejected, Cancelled },
+            [PaymentRejected] = new HashSet<OrderStatus> { PendingPayment, Cancelled },
+            [PaymentApproved] = new HashSet<OrderStatus> { PendingShipment, Cancelled },
+            [PendingShipment] = new HashSet<OrderStatus> { Shipped, Cancelled },
+            [Shipped] = new HashSet<OrderStatus> { InTransit },
+            [InTransit] = new HashSet<OrderStatus> { Delivered },
+            [Delivered] = new HashSet<OrderStatus> { Returned },
+            [Returned] = new HashSet<OrderStatus>(),
+            [Cancelled] = new HashSet<OrderStatus>()
+        };
 }

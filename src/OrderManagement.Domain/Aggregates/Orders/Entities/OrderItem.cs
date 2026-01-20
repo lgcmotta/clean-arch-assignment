@@ -4,12 +4,12 @@ namespace OrderManagement.Domain.Aggregates.Orders.Entities;
 
 public sealed class OrderItem()
 {
-    public OrderItem(int productId, string productName, int quantity, decimal unitPrice) : this()
+    public OrderItem(long productId, string productName, int quantity, Money unitPrice) : this()
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(productId);
         ArgumentException.ThrowIfNullOrWhiteSpace(productName);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(unitPrice);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(unitPrice.Value);
 
         ProductId = productId;
         ProductName = productName;
@@ -17,7 +17,7 @@ public sealed class OrderItem()
         UnitPrice = unitPrice;
     }
 
-    public int ProductId { get; private set; }
+    public long ProductId { get; private set; }
 
     public string ProductName { get; private set; } = string.Empty;
 
@@ -31,23 +31,46 @@ public sealed class OrderItem()
     {
         Quantity += value;
 
-        RecalculateTotalPrice();
+
     }
 
     public void DecreaseQuantityBy(int value)
     {
-        Quantity += value;
+        Quantity -= value;
 
         if (Quantity < 0)
         {
             Quantity = 0;
         }
+    }
 
+    public void SetQuantity(int quantity)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
+
+        Quantity = quantity;
+    }
+
+    public void UpdateDetails(string productName, decimal unitPrice)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(productName);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(unitPrice);
+
+        ProductName = productName;
+        UnitPrice = unitPrice;
         RecalculateTotalPrice();
     }
 
-    private void RecalculateTotalPrice()
+    public void RecalculateTotalPrice()
     {
         TotalPrice = UnitPrice * Quantity;
+    }
+
+    public void UpdateUnitPriceIfChanged(Money unitPrice)
+    {
+        if (unitPrice != UnitPrice)
+        {
+            UnitPrice = unitPrice;
+        }
     }
 }

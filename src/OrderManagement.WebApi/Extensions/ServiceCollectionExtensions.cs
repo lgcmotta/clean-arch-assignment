@@ -4,19 +4,26 @@ using HashidsNet;
 using MediatR.NotificationPublishers;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
+using OrderManagement.Application;
 using OrderManagement.Application.Behaviors;
 using OrderManagement.Application.Options;
-using OrderManagement.Application.Shared;
+using OrderManagement.Application.Repositories.Orders;
+using OrderManagement.Application.Repositories.Products;
 using OrderManagement.Domain.Aggregates.Customers.Repositories;
 using OrderManagement.Domain.Aggregates.Orders.Repositories;
 using OrderManagement.Domain.Aggregates.Products.Repositories;
 using OrderManagement.Domain.Core;
-using OrderManagement.Infrastructure.Persistence.Behaviors;
-using OrderManagement.Infrastructure.Persistence.Consumers;
+using OrderManagement.Infrastructure.Behaviors;
+using OrderManagement.Infrastructure.Consumers;
 using OrderManagement.Infrastructure.Persistence.Contexts;
+using OrderManagement.Infrastructure.Persistence.Documents;
+using OrderManagement.Infrastructure.Persistence.Documents.Orders;
+using OrderManagement.Infrastructure.Persistence.Documents.Products;
 using OrderManagement.Infrastructure.Persistence.Interceptors;
-using OrderManagement.Infrastructure.Persistence.Models;
 using OrderManagement.Infrastructure.Persistence.Repositories;
+using OrderManagement.Infrastructure.Persistence.Repositories.Customers;
+using OrderManagement.Infrastructure.Persistence.Repositories.Orders;
+using OrderManagement.Infrastructure.Persistence.Repositories.Products;
 using System.Threading.Channels;
 
 namespace OrderManagement.WebApi.Extensions;
@@ -71,7 +78,7 @@ public static class ServiceCollectionExtensions
             {
                 options.AddOpenBehavior(typeof(ValidationBehavior<,>));
                 options.AddOpenBehavior(typeof(DomainEventPublisherBehavior<,>));
-                options.RegisterServicesFromAssembly(typeof(IAssemblyMarker).Assembly);
+                options.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly);
                 options.NotificationPublisherType = typeof(TaskWhenAllPublisher);
             });
         }
@@ -82,7 +89,7 @@ public static class ServiceCollectionExtensions
 
             ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-            services.AddScoped<IMongoClient>(_ => new MongoClient(connectionString));
+            services.AddSingleton<IMongoClient>(_ => new MongoClient(connectionString));
 
             return services;
         }
@@ -93,7 +100,7 @@ public static class ServiceCollectionExtensions
 
             ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-            services.AddDbContext<SqlServerDbContext>((provider, options) =>
+            services.AddDbContext<AppDbContext>((provider, options) =>
             {
                 options.UseSqlServer(connectionString, (sql) =>
                 {
@@ -101,7 +108,7 @@ public static class ServiceCollectionExtensions
                     sql.EnableRetryOnFailure(maxRetryCount: 5);
                 });
 
-                options.AddInterceptors(InterceptorAssemblyScanner.Scan(provider, typeof(SqlServerDbContext).Assembly));
+                options.AddInterceptors(InterceptorAssemblyScanner.Scan(provider, typeof(AppDbContext).Assembly));
             });
 
             return services;
@@ -111,8 +118,7 @@ public static class ServiceCollectionExtensions
         {
             return services
                 .AddScoped<IProductWriteRepository, ProductWriteRepository>()
-                .AddScoped<IProductSyncRepository, ProductSyncRepository>()
-                .AddScoped<IProductReadRepository<ProductDocumentModel>, ProductReadRepository>()
+                .AddScoped<IProductReadRepository, ProductReadRepository>()
                 .AddScoped<ICustomerWriteRepository, CustomerWriteRepository>()
                 .AddScoped<ICustomerReadRepository, CustomerReadRepository>()
                 .AddScoped<IOrderWriteRepository, OrderWriteRepository>()

@@ -35,6 +35,12 @@ public abstract record Enumeration
         return Convert<TEnumeration, int>(key, nameof(Key), e => e.Key == key);
     }
 
+
+    public static TEnumeration ParseByValue<TEnumeration>(string value) where TEnumeration : Enumeration
+    {
+        return Convert<TEnumeration, string>(value, nameof(Value), e => e.Value == value);
+    }
+
     public static bool TryParseByKey<TEnumeration>(int key, [NotNullWhen(returnValue: true)] out TEnumeration? enumeration) where TEnumeration : Enumeration
     {
         return TryConvert(e => e.Key == key, out enumeration);
@@ -54,4 +60,6 @@ public abstract record Enumeration
         enumeration = Enumerate<TEnumeration>().FirstOrDefault(predicate);
         return enumeration is not null;
     }
+
+    public override string ToString() => Value;
 }

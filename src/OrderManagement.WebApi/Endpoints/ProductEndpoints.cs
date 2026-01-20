@@ -2,9 +2,8 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Application.Commands.Products.CreateProduct;
-using OrderManagement.Application.Queries.SearchProducts;
-using OrderManagement.Application.Shared;
-using OrderManagement.WebApi.Requests;
+using OrderManagement.Application.Models.Products;
+using OrderManagement.Application.Queries.Products.Search;
 using OrderManagement.WebApi.Responses;
 using System.Net.Mime;
 
@@ -35,7 +34,7 @@ internal static class ProductEndpoints
                 .WithDisplayName("Search Products")
                 .WithTags("products")
                 .MapToApiVersion(version)
-                .Produces<PagedApiResponse<IEnumerable<ProductResponse>>>(contentType: MediaTypeNames.Application.Json)
+                .Produces<PagedApiResponse<IEnumerable<ProductReadModel>>>(contentType: MediaTypeNames.Application.Json)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
 
             return builder;
@@ -43,25 +42,22 @@ internal static class ProductEndpoints
 
         private static async Task<IResult> CreateProductAsync(
             [FromServices] IMediator mediator,
-            [FromBody] CreateProductCommand body,
+            [FromBody] CreateProductCommand command,
             CancellationToken cancellationToken = default)
         {
-            var response = await mediator.Send(body, cancellationToken);
+            var response = await mediator.Send(command, cancellationToken);
 
             return Results.Created($"/products/{response.Id}", new ApiResponse<CreateProductResponse>(response));
         }
 
         private static async Task<IResult> SearchProductsAsync(
             [FromServices] IMediator mediator,
-            [AsParameters] PaginationRequest pagination,
+            [AsParameters] SearchProductsQuery query,
             CancellationToken cancellationToken = default)
         {
-            var query = new SearchProductsQuery(pagination.Page, pagination.Size, pagination.Sort, pagination.SortBy);
-
             var response = await mediator.Send(query, cancellationToken);
 
-            return Results.Ok(new PagedApiResponse<IEnumerable<ProductResponse>>(response.Products,
-                new PagedResponse(response.Pagination.Page, response.Pagination.Previous, response.Pagination.Next, response.Pagination.Total)));
+            return Results.Ok(new PagedApiResponse<IEnumerable<ProductReadModel>>(response.Products, response.Pagination));
         }
     }
 }

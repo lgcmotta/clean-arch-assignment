@@ -15,7 +15,7 @@ public sealed class Customer() : AggregateRoot
         Phone = phone;
     }
 
-    public int Id { get; private set; }
+    public long Id { get; private set; }
 
     public string Name { get; private set; } = string.Empty;
 

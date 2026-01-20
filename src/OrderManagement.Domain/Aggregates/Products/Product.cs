@@ -4,7 +4,7 @@ namespace OrderManagement.Domain.Aggregates.Products;
 
 public sealed class Product() : AggregateRoot
 {
-    public int Id { get; private set; }
+    public long Id { get; private set; }
 
     public string Name { get; private set; } = string.Empty;
 

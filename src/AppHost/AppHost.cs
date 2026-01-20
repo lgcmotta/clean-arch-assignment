@@ -24,7 +24,9 @@ var webapi = builder.AddProject<OrderManagement_WebApi>("orders-api")
     .WithReference(mongo)
     .WithReference(sqlserver)
     .WaitFor(mongo)
-    .WaitFor(sqlserver);
+    .WaitFor(sqlserver)
+    .WithHttpHealthCheck("/healthz/ready")
+    .WithHttpHealthCheck("/healthz/live");
 
 var scalar = builder.AddScalarApiReference();
 

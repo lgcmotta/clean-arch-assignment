@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OrderManagement.Application\OrderManagement.Application.csproj" />
-    <ProjectReference Include="..\OrderManagement.Infrastructure.Persistence\OrderManagement.Infrastructure.Persistence.csproj" />
     <ProjectReference Include="..\OrderManagement.Infrastructure\OrderManagement.Infrastructure.csproj" />
   </ItemGroup>
 

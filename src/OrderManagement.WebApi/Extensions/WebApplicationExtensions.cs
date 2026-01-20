@@ -41,7 +41,7 @@ internal static class WebApplicationExtensions
         public async ValueTask SetupSqlServerAsync()
         {
             await using var scope = app.Services.CreateAsyncScope();
-            await using var context = scope.ServiceProvider.GetRequiredService<SqlServerDbContext>();
+            await using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             await context.MigrateSqlServerAsync();
             await context.SeedCustomerIfNone();
         }
