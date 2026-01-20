@@ -25,4 +25,13 @@ public class CustomerWriteRepository(AppDbContext context) : ICustomerWriteRepos
 
         return (response?.Customer, response?.Order);
     }
+
+    public async ValueTask<bool> CheckIfEmailIsAlreadyTakenAsync(string email, CancellationToken cancellationToken = default) =>
+        await context.Set<Customer>().AsNoTracking().AnyAsync(customer => customer.Email == email, cancellationToken);
+
+    public async ValueTask AddNewCustomerAsync(Customer customer, CancellationToken cancellationToken = default) =>
+        await context.Set<Customer>().AddAsync(customer, cancellationToken);
+
+    public async ValueTask SaveChangesAsync(CancellationToken cancellationToken = default) =>
+        await context.SaveChangesAsync(cancellationToken);
 }

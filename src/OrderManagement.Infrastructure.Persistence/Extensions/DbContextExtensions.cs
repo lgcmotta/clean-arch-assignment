@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OrderManagement.Domain.Aggregates.Customers;
 using OrderManagement.Domain.Core;
 

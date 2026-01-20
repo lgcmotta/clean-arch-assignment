@@ -1,3 +1,4 @@
+using OrderManagement.Domain.Aggregates.Customers.Events;
 using OrderManagement.Domain.Core;
 
 namespace OrderManagement.Domain.Aggregates.Customers;
@@ -22,4 +23,9 @@ public sealed class Customer() : AggregateRoot
     public string Email { get; private set; } = string.Empty;
 
     public string Phone { get; private set; } = string.Empty;
+
+    public void RaiseCustomerCreatedDomainEvent()
+    {
+        AddDomainEvent(new CustomerCreatedDomainEvent(Id));
+    }
 }

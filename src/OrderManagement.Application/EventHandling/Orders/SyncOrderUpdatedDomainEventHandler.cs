@@ -7,7 +7,6 @@ using OrderManagement.Domain.Aggregates.Customers.Repositories;
 using OrderManagement.Domain.Aggregates.Orders;
 using OrderManagement.Domain.Aggregates.Orders.Events;
 using OrderManagement.Domain.Aggregates.Orders.Exceptions;
-using OrderManagement.Domain.Aggregates.Orders.Repositories;
 using OrderManagement.Domain.Aggregates.Products.Repositories;
 using OrderManagement.Domain.Core;
 

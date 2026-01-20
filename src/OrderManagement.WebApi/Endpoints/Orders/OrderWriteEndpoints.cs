@@ -7,7 +7,7 @@ using OrderManagement.Application.Commands.Orders.Update;
 using OrderManagement.WebApi.Responses;
 using System.Net.Mime;
 
-namespace OrderManagement.WebApi.Endpoints;
+namespace OrderManagement.WebApi.Endpoints.Orders;
 
 internal static class OrderWriteEndpoints
 {

@@ -1,15 +1,13 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OrderManagement.Application.Models;
 using OrderManagement.Application.Models.Orders;
-using OrderManagement.Application.Models.Shared;
 using OrderManagement.Application.Queries.Orders.Search;
 using OrderManagement.WebApi.Requests;
 using OrderManagement.WebApi.Responses;
 using System.Net.Mime;
 
-namespace OrderManagement.WebApi.Endpoints;
+namespace OrderManagement.WebApi.Endpoints.Orders;
 
 internal static class OrderReadEndpoints
 {

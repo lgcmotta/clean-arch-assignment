@@ -1,4 +1,3 @@
-using OrderManagement.Application.Models;
 using OrderManagement.Application.Models.Products;
 using OrderManagement.Application.Models.Shared;
 

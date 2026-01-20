@@ -1,6 +1,8 @@
 using Asp.Versioning;
 using OrderManagement.Infrastructure.Extensions;
-using OrderManagement.WebApi.Endpoints;
+using OrderManagement.WebApi.Endpoints.Customers;
+using OrderManagement.WebApi.Endpoints.Orders;
+using OrderManagement.WebApi.Endpoints.Products;
 using OrderManagement.WebApi.Extensions;
 
 var v1 = new ApiVersion(majorVersion: 1, minorVersion: 0);
@@ -17,7 +19,7 @@ builder.Services.AddIdHasher(builder.Configuration);
 builder.Services.AddDomainEventsPubSub();
 builder.Services.AddApiVersioning(v1);
 builder.Services.AddOpenApi();
-builder.Services.AddCors(options => options.AddPolicy("Permissive", cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddPermissiveCors();
 
 var app = builder.Build();
 
@@ -41,6 +43,7 @@ api.MapPostOrders(v1);
 api.MapPatchOrders(v1);
 api.MapDeleteOrders(v1);
 api.MapGetOrders(v1);
+api.MapPostCustomer(v1);
 
 if (app.Environment.IsDevelopment())
 {

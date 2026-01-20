@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using OrderManagement.Application;
 using OrderManagement.Application.Behaviors;
 using OrderManagement.Application.Options;
+using OrderManagement.Application.Repositories.Customers;
 using OrderManagement.Application.Repositories.Orders;
 using OrderManagement.Application.Repositories.Products;
 using OrderManagement.Domain.Aggregates.Customers.Repositories;
@@ -16,11 +17,7 @@ using OrderManagement.Domain.Core;
 using OrderManagement.Infrastructure.Behaviors;
 using OrderManagement.Infrastructure.Consumers;
 using OrderManagement.Infrastructure.Persistence.Contexts;
-using OrderManagement.Infrastructure.Persistence.Documents;
-using OrderManagement.Infrastructure.Persistence.Documents.Orders;
-using OrderManagement.Infrastructure.Persistence.Documents.Products;
 using OrderManagement.Infrastructure.Persistence.Interceptors;
-using OrderManagement.Infrastructure.Persistence.Repositories;
 using OrderManagement.Infrastructure.Persistence.Repositories.Customers;
 using OrderManagement.Infrastructure.Persistence.Repositories.Orders;
 using OrderManagement.Infrastructure.Persistence.Repositories.Products;
@@ -32,6 +29,11 @@ public static class ServiceCollectionExtensions
 {
     extension(IServiceCollection services)
     {
+        internal IServiceCollection AddPermissiveCors()
+        {
+            return services.AddCors(options => options.AddPolicy("Permissive", cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+        }
+
         internal IServiceCollection AddDomainEventsPubSub()
         {
             services.AddSingleton<Channel<IDomainEvent>>(_ => Channel.CreateUnbounded<IDomainEvent>(new UnboundedChannelOptions

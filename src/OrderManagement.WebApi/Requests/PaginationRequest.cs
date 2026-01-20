@@ -1,6 +1,5 @@
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
-using OrderManagement.Application.Models;
 using OrderManagement.Application.Models.Shared;
 
 namespace OrderManagement.WebApi.Requests;

@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using OrderManagement.Domain.Aggregates.Products;
 using OrderManagement.Domain.Aggregates.Products.Repositories;
 using OrderManagement.Infrastructure.Persistence.Contexts;
-using System.Security.Principal;
 
 namespace OrderManagement.Infrastructure.Persistence.Repositories.Products;
 

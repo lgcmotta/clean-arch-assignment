@@ -2,7 +2,6 @@ using HashidsNet;
 using MediatR;
 using OrderManagement.Domain.Aggregates.Orders.Exceptions;
 using OrderManagement.Domain.Aggregates.Orders.Repositories;
-using OrderManagement.Domain.Aggregates.Orders.ValueObjects;
 
 namespace OrderManagement.Application.Commands.Orders.Cancel;
 
