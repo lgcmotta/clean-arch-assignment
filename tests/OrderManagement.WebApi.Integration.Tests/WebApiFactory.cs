@@ -23,12 +23,16 @@ public sealed class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifeti
     {
         builder.UseSetting("ConnectionStrings:SqlServer", _sql.GetConnectionString());
         builder.UseSetting("ConnectionStrings:MongoDB", _mongo.GetConnectionString());
+        builder.UseSetting("HashIds:Salt", "test-salt");
+        builder.UseSetting("HashIds:MinHashLength", "7");
 
         builder.ConfigureAppConfiguration(configuration =>
         {
             configuration.AddInMemoryCollection([
                 new KeyValuePair<string, string?>("ConnectionStrings:SqlServer", _sql.GetConnectionString()),
-                new KeyValuePair<string, string?>("ConnectionStrings:MongoDB", _mongo.GetConnectionString())
+                new KeyValuePair<string, string?>("ConnectionStrings:MongoDB", _mongo.GetConnectionString()),
+                new KeyValuePair<string, string?>("HashIds:Salt", "test-salt"),
+                new KeyValuePair<string, string?>("HashIds:MinHashLength", "7"),
             ]);
         });
     }

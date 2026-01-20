@@ -1,6 +1,6 @@
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Orders;
 
-public sealed class SearchOrdersEndpointTests : IClassFixture<WebApiFactory>
+public sealed class SearchOrdersEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
@@ -58,7 +58,7 @@ public sealed class SearchOrdersEndpointTests : IClassFixture<WebApiFactory>
 
         // Act
         var response = await client.GetFromJsonAsync<PagedApiResponse<IEnumerable<OrderReadModel>>>(
-            $"/api/v1/customers/{customerId}/orders?page=1&size=10",
+            $"/api/v1/customers/{customerId}/orders?page=1&size=10&sort=ASC",
             cancellationToken);
 
         // Assert
@@ -78,7 +78,7 @@ public sealed class SearchOrdersEndpointTests : IClassFixture<WebApiFactory>
         var client = _factory.CreateHttpClient();
 
         // Act
-        var response = await client.GetAsync($"/api/v1/customers/{customerId}/orders?page=0&size=0", cancellationToken);
+        var response = await client.GetAsync($"/api/v1/customers/{customerId}/orders?page=0&size=0&sort=ASC", cancellationToken);
         var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken);
 
         // Assert

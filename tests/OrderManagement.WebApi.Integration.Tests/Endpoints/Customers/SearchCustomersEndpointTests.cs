@@ -1,6 +1,6 @@
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Customers;
 
-public sealed class SearchCustomersEndpointTests : IClassFixture<WebApiFactory>
+public sealed class SearchCustomersEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
@@ -18,7 +18,7 @@ public sealed class SearchCustomersEndpointTests : IClassFixture<WebApiFactory>
         await using var scope = _factory.Services.CreateAsyncScope();
         var hashids = scope.ServiceProvider.GetRequiredService<IHashids>();
         var repository = scope.ServiceProvider.GetRequiredService<ICustomerReadRepository>();
-        var customerId = hashids.EncodeLong(Faker.Random.Long(1, 100000));
+        var customerId = hashids.EncodeLong(Random.Shared.NextInt64(751, 1000));
         var model = new CustomerReadModel
         {
             Id = customerId,
@@ -31,7 +31,7 @@ public sealed class SearchCustomersEndpointTests : IClassFixture<WebApiFactory>
 
         // Act
         var response = await client.GetFromJsonAsync<PagedApiResponse<IEnumerable<CustomerReadModel>>>(
-            "/api/v1/customers?page=1&size=10",
+            "/api/v1/customers?page=1&size=10&sort=ASC",
             cancellationToken);
 
         // Assert
@@ -48,7 +48,7 @@ public sealed class SearchCustomersEndpointTests : IClassFixture<WebApiFactory>
         var cancellationToken = TestContext.Current.CancellationToken;
 
         // Act
-        var response = await client.GetAsync("/api/v1/customers?page=0&size=0", cancellationToken);
+        var response = await client.GetAsync("/api/v1/customers?page=0&size=0&sort=ASC", cancellationToken);
         var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken);
 
         // Assert

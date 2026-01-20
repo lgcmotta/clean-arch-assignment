@@ -1,6 +1,6 @@
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Orders;
 
-public sealed class CancelOrderEndpointTests : IClassFixture<WebApiFactory>
+public sealed class CancelOrderEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
@@ -45,8 +45,8 @@ public sealed class CancelOrderEndpointTests : IClassFixture<WebApiFactory>
         var cancellationToken = TestContext.Current.CancellationToken;
         await using var scope = _factory.Services.CreateAsyncScope();
         var hashids = scope.ServiceProvider.GetRequiredService<IHashids>();
-        var customerId = hashids.EncodeLong(9999998);
-        var orderId = hashids.EncodeLong(9999999);
+        var customerId = hashids.EncodeLong(Random.Shared.NextInt64(251, 500));
+        var orderId = hashids.EncodeLong(Random.Shared.NextInt64(251, 500));
         var client = _factory.CreateHttpClient();
 
         // Act

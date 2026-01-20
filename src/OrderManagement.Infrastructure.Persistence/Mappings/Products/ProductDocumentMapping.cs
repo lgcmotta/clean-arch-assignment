@@ -22,7 +22,7 @@ public static class ProductDocumentMapping
         internal ProductDocument ToDocument(ObjectId? objectId = null) =>
             new()
             {
-                Id = objectId ?? ObjectId.GenerateNewId(),
+                Id = (objectId is null || objectId == ObjectId.Empty ? ObjectId.GenerateNewId() : objectId.Value),
                 ExternalId = model.Id,
                 Name = model.Name,
                 Price = decimal.ToInt64(model.Price * 100m)

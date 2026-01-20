@@ -1,6 +1,6 @@
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Orders;
 
-public sealed class CreateOrderEndpointTests : IClassFixture<WebApiFactory>
+public sealed class CreateOrderEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
@@ -19,7 +19,7 @@ public sealed class CreateOrderEndpointTests : IClassFixture<WebApiFactory>
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var hashids = scope.ServiceProvider.GetRequiredService<IHashids>();
         var customer = new Customer(Faker.Name.FullName(), Faker.Internet.Email(), Faker.Phone.PhoneNumber());
-        var product = new Product(Faker.Commerce.ProductName(), decimal.Round(Faker.Random.Decimal(1, 1000), 2));
+        var product = new Product(Faker.Commerce.ProductName(), Faker.Finance.Amount());
         await context.Set<Customer>().AddAsync(customer, cancellationToken);
         await context.Set<Product>().AddAsync(product, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

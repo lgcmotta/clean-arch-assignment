@@ -1,6 +1,6 @@
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Products;
 
-public sealed class SearchProductsEndpointTests : IClassFixture<WebApiFactory>
+public sealed class SearchProductsEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
@@ -18,12 +18,12 @@ public sealed class SearchProductsEndpointTests : IClassFixture<WebApiFactory>
         await using var scope = _factory.Services.CreateAsyncScope();
         var hashids = scope.ServiceProvider.GetRequiredService<IHashids>();
         var repository = scope.ServiceProvider.GetRequiredService<IProductReadRepository>();
-        var productId = hashids.EncodeLong(Faker.Random.Long(1, 100000));
+        var productId = hashids.EncodeLong(Random.Shared.NextInt64(1, 250));
         var model = new ProductReadModel
         {
             Id = productId,
             Name = Faker.Commerce.ProductName(),
-            Price = decimal.Round(Faker.Random.Decimal(1, 1000), 2)
+            Price = Faker.Finance.Amount()
         };
         await repository.SyncReadModelAsync(model, cancellationToken);
         var client = _factory.CreateHttpClient();

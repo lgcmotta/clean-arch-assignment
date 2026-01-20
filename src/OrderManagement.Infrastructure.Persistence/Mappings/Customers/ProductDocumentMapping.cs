@@ -23,7 +23,7 @@ public static class CustomerDocumentMapping
         internal CustomerDocument ToDocument(ObjectId? objectId = null) =>
             new()
             {
-                Id = objectId ?? ObjectId.GenerateNewId(),
+                Id = (objectId is null || objectId == ObjectId.Empty ? ObjectId.GenerateNewId() : objectId.Value),
                 ExternalId = model.Id,
                 Name = model.Name,
                 Email = model.Email,

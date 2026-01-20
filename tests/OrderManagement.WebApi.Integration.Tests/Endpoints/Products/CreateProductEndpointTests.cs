@@ -1,6 +1,6 @@
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Products;
 
-public sealed class CreateProductEndpointTests : IClassFixture<WebApiFactory>
+public sealed class CreateProductEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
