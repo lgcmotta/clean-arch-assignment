@@ -21,6 +21,8 @@ using OrderManagement.Infrastructure.Persistence.Interceptors;
 using OrderManagement.Infrastructure.Persistence.Repositories.Customers;
 using OrderManagement.Infrastructure.Persistence.Repositories.Orders;
 using OrderManagement.Infrastructure.Persistence.Repositories.Products;
+using OrderManagement.WebApi.Diagnostics;
+using OrderManagement.WebApi.Middlewares;
 using System.Threading.Channels;
 
 namespace OrderManagement.WebApi.Extensions;
@@ -29,6 +31,15 @@ public static class ServiceCollectionExtensions
 {
     extension(IServiceCollection services)
     {
+        internal IServiceCollection AddExceptionHandling()
+        {
+            services.AddTransient<GlobalExceptionHandlerMiddleware>();
+
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+
+            return services;
+        }
+
         internal IServiceCollection AddPermissiveCors()
         {
             return services.AddCors(options => options.AddPolicy("Permissive", cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));

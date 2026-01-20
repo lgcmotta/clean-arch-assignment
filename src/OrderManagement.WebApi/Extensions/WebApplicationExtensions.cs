@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 using OrderManagement.Infrastructure.Persistence.Contexts;
 using OrderManagement.Infrastructure.Persistence.Extensions;
+using OrderManagement.WebApi.Middlewares;
 using Scalar.AspNetCore;
 
 namespace OrderManagement.WebApi.Extensions;
@@ -10,6 +11,13 @@ internal static class WebApplicationExtensions
 {
     extension(WebApplication app)
     {
+        internal WebApplication UseGlobalExceptionHandler()
+        {
+            app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+            return app;
+        }
+
         internal WebApplication UsePermissiveCors()
         {
             app.UseCors("Permissive");

@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services.AddExceptionHandling();
 builder.Services.AddMongoDbClient(builder.Configuration);
 builder.Services.AddSqlServerDbContext(builder.Configuration);
 builder.Services.AddRepositories();
@@ -26,6 +27,7 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 
 app.UseRouting();
+app.UseGlobalExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
