@@ -20,5 +20,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/OrderManagement.Domain.Tests/OrderManagement.Domain.Tests.csproj" />
+    <Project Path="tests/OrderManagement.WebApi.Integration.Tests/OrderManagement.WebApi.Integration.Tests.csproj" />
   </Folder>
 </Solution>
