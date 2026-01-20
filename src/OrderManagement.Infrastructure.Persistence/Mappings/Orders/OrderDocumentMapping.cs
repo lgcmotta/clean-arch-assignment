@@ -34,11 +34,11 @@ public static class OrderDocumentMapping
 
     extension(OrderReadModel model)
     {
-        internal OrderDocument ToDocument()
+        internal OrderDocument ToDocument(ObjectId? objectId = null)
         {
             return new OrderDocument
             {
-                Id = new ObjectId(),
+                Id = objectId ?? ObjectId.GenerateNewId(),
                 ExternalId = model.Id,
                 CreatedDate = model.CreatedDate,
                 TotalAmount = decimal.ToInt64(model.TotalAmount * 100m),

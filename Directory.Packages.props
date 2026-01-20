@@ -19,6 +19,9 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
     <PackageVersion Include="Microsoft.OpenApi" Version="2.4.3" />
     <PackageVersion Include="MongoDB.Driver" Version="3.6.0" />
+    <PackageVersion Include="MongoDB.Driver.Core.Extensions.DiagnosticSources" Version="3.0.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.14.0-beta.2" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.EventCounters" Version="1.14.0-alpha.1" />
     <PackageVersion Include="Scalar.Aspire" Version="0.8.20" />
     <PackageVersion Include="Scalar.AspNetCore" Version="2.12.11" />
     <PackageVersion Include="System.CommandLine" Version="2.0.2" />

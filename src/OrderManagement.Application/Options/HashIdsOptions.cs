@@ -8,5 +8,8 @@ public class HashIdsOptions
 
     public int MinHashLength { get; init; } = 7;
 
-    public static HashIdsOptions Default => new() { Salt = Guid.NewGuid().ToString().Replace("-", string.Empty), };
+    public static HashIdsOptions Default => new()
+    {
+        Salt = Guid.NewGuid().ToString().Replace("-", string.Empty),
+    };
 }

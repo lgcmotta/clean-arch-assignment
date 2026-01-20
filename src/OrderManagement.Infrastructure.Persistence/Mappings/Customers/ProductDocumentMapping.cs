@@ -20,10 +20,10 @@ public static class CustomerDocumentMapping
 
     extension(CustomerReadModel model)
     {
-        internal CustomerDocument ToDocument() =>
+        internal CustomerDocument ToDocument(ObjectId? objectId = null) =>
             new()
             {
-                Id = new ObjectId(),
+                Id = objectId ?? ObjectId.GenerateNewId(),
                 ExternalId = model.Id,
                 Name = model.Name,
                 Email = model.Email,

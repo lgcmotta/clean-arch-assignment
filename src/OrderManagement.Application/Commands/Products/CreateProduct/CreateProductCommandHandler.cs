@@ -32,6 +32,8 @@ internal class CreateProductCommandHandler : IRequestHandler<CreateProductComman
 
         product.RaiseProductCreatedDomainEvent();
 
-        return new CreateProductResponse(Id: _hashids.EncodeLong(product.Id), product.Name, product.Price);
+        var productId = _hashids.EncodeLong(product.Id);
+
+        return new CreateProductResponse(Id: productId, product.Name, product.Price);
     }
 }

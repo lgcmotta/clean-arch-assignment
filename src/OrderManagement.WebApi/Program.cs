@@ -13,7 +13,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddExceptionHandling();
 builder.Services.AddMongoDbClient(builder.Configuration);
-builder.Services.AddSqlServerDbContext(builder.Configuration);
+builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddCQRS();
 builder.Services.AddIdHasher(builder.Configuration);

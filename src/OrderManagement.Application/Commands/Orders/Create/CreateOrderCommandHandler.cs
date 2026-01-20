@@ -77,6 +77,6 @@ internal sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderCom
 
         var orderId = _hashids.EncodeLong(order.Id);
 
-        return new CreateOrderResponse(orderId, request.CustomerId, order.Status.ToString());
+        return new CreateOrderResponse(orderId, request.CustomerId, order.Status.Value);
     }
 }

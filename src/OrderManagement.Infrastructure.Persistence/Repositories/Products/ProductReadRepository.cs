@@ -49,9 +49,11 @@ public class ProductReadRepository(IMongoClient mongo) : IProductReadRepository
 
     public async ValueTask SyncReadModelAsync(ProductReadModel model, CancellationToken cancellationToken = default)
     {
-        var document = model.ToDocument();
+        var filter = Builders<ProductDocument>.Filter.Eq(doc => doc.ExternalId, model.Id);
 
-        var filter = Builders<ProductDocument>.Filter.Eq(doc => doc.ExternalId, document.ExternalId);
+        var objectId = await _collection.Find(filter).Project(document => document.Id).SingleOrDefaultAsync(cancellationToken);
+
+        var document = model.ToDocument(objectId);
 
         var options = new ReplaceOptions { IsUpsert = true };
 

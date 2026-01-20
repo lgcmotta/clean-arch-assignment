@@ -29,7 +29,7 @@ internal static class WebApplicationExtensions
         {
             app.MapScalarApiReference(options =>
             {
-                options.WithTheme(ScalarTheme.Purple)
+                options.WithTheme(ScalarTheme.DeepSpace)
                     .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
                     .WithOpenApiRoutePattern("/openapi/{documentName}.json")
                     .WithTitle("Order Management API");

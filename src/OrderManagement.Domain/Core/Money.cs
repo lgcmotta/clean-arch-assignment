@@ -21,7 +21,7 @@ public readonly struct Money : IEquatable<Money>
 
     public long ToCents() => decimal.ToInt64(Value * 100m);
 
-    public static Money FromCents(long cents) => new(cents * 100m);
+    public static Money FromCents(long cents) => new(cents / 100m);
 
     public static implicit operator decimal(Money money) => money._value;
 

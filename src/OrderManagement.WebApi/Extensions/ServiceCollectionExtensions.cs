@@ -4,6 +4,7 @@ using HashidsNet;
 using MediatR.NotificationPublishers;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 using OrderManagement.Application;
 using OrderManagement.Application.Behaviors;
 using OrderManagement.Application.Options;
@@ -80,7 +81,7 @@ public static class ServiceCollectionExtensions
             var options = configuration.GetSection(HashIdsOptions.SectionName).Get<HashIdsOptions>() ??
                           HashIdsOptions.Default;
 
-            return services.AddSingleton<IHashids>(_ => new Hashids(options.Salt, options.MinHashLength));
+            return services.AddSingleton<IHashids>(new Hashids(options.Salt, options.MinHashLength));
         }
 
         public IServiceCollection AddCQRS()
@@ -98,16 +99,23 @@ public static class ServiceCollectionExtensions
 
         public IServiceCollection AddMongoDbClient(IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("MongoDBReadOnly");
+            var connectionString = configuration.GetConnectionString("MongoDB");
 
             ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-            services.AddSingleton<IMongoClient>(_ => new MongoClient(connectionString));
+            services.AddSingleton<IMongoClient>(_ =>
+            {
+                var settings = MongoClientSettings.FromConnectionString(connectionString);
+
+                settings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber());
+
+                return new MongoClient(settings);
+            });
 
             return services;
         }
 
-        public IServiceCollection AddSqlServerDbContext(IConfiguration configuration)
+        public IServiceCollection AddAppDbContext(IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("SqlServer");
 

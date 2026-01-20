@@ -43,15 +43,25 @@ public static class HostApplicationBuilderExtensions
                 {
                     metrics.AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
-                        .AddRuntimeInstrumentation();
+                        .AddRuntimeInstrumentation()
+                        .AddEventCountersInstrumentation(options => options
+                            .AddEventSources(
+                                "Microsoft.AspNetCore.Hosting",
+                                "Microsoft.AspNetCore.Http.Connections",
+                                "Microsoft-AspNetCore-Server-Kestrel",
+                                "System.Net.Http",
+                                "System.Net.NameResolution",
+                                "System.Net.Security"
+                            )
+                        );
                 })
                 .WithTracing(tracing =>
                 {
                     tracing.AddSource(builder.Environment.ApplicationName)
-                        .AddAspNetCoreInstrumentation(options =>
-                            options.Filter = context => context.IsNotHealthCheck()
-                        )
-                        .AddHttpClientInstrumentation();
+                        .AddAspNetCoreInstrumentation(options => options.Filter = context => context.IsNotHealthCheck())
+                        .AddHttpClientInstrumentation()
+                        .AddEntityFrameworkCoreInstrumentation()
+                        .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
                 });
 
             builder.AddOpenTelemetryExporters();

@@ -19,10 +19,10 @@ public static class ProductDocumentMapping
 
     extension(ProductReadModel model)
     {
-        internal ProductDocument ToDocument() =>
+        internal ProductDocument ToDocument(ObjectId? objectId = null) =>
             new()
             {
-                Id = new ObjectId(),
+                Id = objectId ?? ObjectId.GenerateNewId(),
                 ExternalId = model.Id,
                 Name = model.Name,
                 Price = decimal.ToInt64(model.Price * 100m)

@@ -16,7 +16,7 @@ public class CustomerWriteRepository(AppDbContext context) : ICustomerWriteRepos
         var response = await context.Set<Customer>().AsNoTracking()
             .Where(customer => customer.Id == customerId)
             .LeftJoin(
-                context.Set<Order>().Where(order => order.Id == orderId),
+                context.Set<Order>().Where(order => order.Id == orderId).Include(order => order.Items),
                 customer => customer.Id,
                 order => order.CustomerId,
                 (customer, order) => new { Customer = customer, Order = order }
