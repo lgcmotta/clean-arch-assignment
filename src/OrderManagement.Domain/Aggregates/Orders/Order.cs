@@ -43,7 +43,7 @@ public sealed class Order() : AggregateRoot
 
         if (!transition.Contains(orderStatus))
         {
-
+            throw new OrderStatusTransitionException(Status.Value, orderStatus.Value);
         }
 
         if (orderStatus == Status)

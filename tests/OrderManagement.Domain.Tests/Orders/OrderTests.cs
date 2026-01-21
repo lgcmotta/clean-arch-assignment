@@ -67,10 +67,10 @@ public sealed class OrderTests
         var order = new Order(Faker.Random.Long(1), DateTimeOffset.UtcNow);
         var productId = Faker.Random.Long(1);
         var productName = Faker.Commerce.ProductName();
-        var initialQuantity = 2;
-        var additionalQuantity = 3;
-        var initialUnitPrice = 10m;
-        var updatedUnitPrice = 12.5m;
+        const int initialQuantity = 2;
+        const int additionalQuantity = 3;
+        const decimal initialUnitPrice = 10m;
+        const decimal updatedUnitPrice = 12.5m;
 
         order.IncludeItem(productId, productName, initialQuantity, initialUnitPrice);
 
@@ -136,7 +136,11 @@ public sealed class OrderTests
     {
         // Arrange
         var order = new Order(Faker.Random.Long(1), DateTimeOffset.UtcNow);
+        order.ChangeStatus(OrderStatus.PendingPayment.Value);
+        order.ChangeStatus(OrderStatus.PaymentApproved.Value);
+        order.ChangeStatus(OrderStatus.PendingShipment.Value);
         order.ChangeStatus(OrderStatus.Shipped.Value);
+        order.ChangeStatus(OrderStatus.InTransit.Value);
 
         // Act
         var act = order.Cancel;
