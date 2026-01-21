@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Application.Commands.Orders.Cancel;
 using OrderManagement.Application.Commands.Orders.Create;
-using OrderManagement.Application.Commands.Orders.Update;
+using OrderManagement.Application.Commands.Orders.Patch;
 using OrderManagement.WebApi.Responses;
 using System.Net.Mime;
 
@@ -35,7 +35,7 @@ internal static class OrderWriteEndpoints
                 .WithDisplayName("Update Order")
                 .WithTags("orders")
                 .MapToApiVersion(version)
-                .Produces<ApiResponse<UpdateOrderResponse>>(contentType: MediaTypeNames.Application.Json)
+                .Produces<ApiResponse<PatchOrderResponse>>(contentType: MediaTypeNames.Application.Json)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status404NotFound, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status409Conflict, contentType: MediaTypeNames.Application.ProblemJson)
@@ -73,12 +73,12 @@ internal static class OrderWriteEndpoints
             [FromServices] IMediator mediator,
             [FromRoute] string customerId,
             [FromRoute] string orderId,
-            [FromBody] UpdateOrderCommand command,
+            [FromBody] PatchOrderCommand command,
             CancellationToken cancellationToken = default)
         {
             var response = await mediator.Send(command, cancellationToken);
 
-            return Results.Ok(new ApiResponse<UpdateOrderResponse>(response));
+            return Results.Ok(new ApiResponse<PatchOrderResponse>(response));
         }
 
         private static async Task<IResult> CancelOrderAsync(

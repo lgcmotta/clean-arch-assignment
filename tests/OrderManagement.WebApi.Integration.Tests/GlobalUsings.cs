@@ -10,7 +10,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using OrderManagement.Application.Commands.Customers.Create;
 global using OrderManagement.Application.Commands.Orders.Cancel;
 global using OrderManagement.Application.Commands.Orders.Create;
-global using OrderManagement.Application.Commands.Orders.Update;
 global using OrderManagement.Application.Commands.Products.CreateProduct;
 global using OrderManagement.Application.Models.Customer;
 global using OrderManagement.Application.Models.Orders;

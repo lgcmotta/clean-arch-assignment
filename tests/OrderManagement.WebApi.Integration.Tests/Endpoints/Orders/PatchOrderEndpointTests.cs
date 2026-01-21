@@ -1,17 +1,19 @@
+using OrderManagement.Application.Commands.Orders.Patch;
+
 namespace OrderManagement.WebApi.Integration.Tests.Endpoints.Orders;
 
-public sealed class UpdateOrderEndpointTests
+public sealed class PatchOrderEndpointTests
 {
     private readonly WebApiFactory _factory;
     private static readonly Faker Faker = new();
 
-    public UpdateOrderEndpointTests(WebApiFactory factory)
+    public PatchOrderEndpointTests(WebApiFactory factory)
     {
         _factory = factory;
     }
 
     [Fact]
-    public async Task UpdateOrder_WhenRequestIsValid_ShouldReturnUpdatedOrder()
+    public async Task PatchOrder_WhenRequestIsValid_ShouldReturnUpdatedOrder()
     {
         // Arrange
         var cancellationToken = TestContext.Current.CancellationToken;
@@ -26,12 +28,12 @@ public sealed class UpdateOrderEndpointTests
         await context.SaveChangesAsync(cancellationToken);
         var customerId = hashids.EncodeLong(customer.Id);
         var orderId = hashids.EncodeLong(order.Id);
-        var request = new UpdateOrderCommand(customerId, orderId, OrderStatus.PendingPayment.Value);
+        var request = new PatchOrderCommand(customerId, orderId, OrderStatus.PendingPayment.Value);
         var client = _factory.CreateHttpClient();
 
         // Act
         var response = await client.PatchAsJsonAsync($"/api/v1/customers/{customerId}/orders/{orderId}", request, cancellationToken);
-        var payload = await response.Content.ReadFromJsonAsync<ApiResponse<UpdateOrderResponse>>(cancellationToken);
+        var payload = await response.Content.ReadFromJsonAsync<ApiResponse<PatchOrderResponse>>(cancellationToken);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -41,11 +43,11 @@ public sealed class UpdateOrderEndpointTests
     }
 
     [Fact]
-    public async Task UpdateOrder_WhenBodyIsInvalid_ShouldReturnProblemDetails()
+    public async Task PatchOrder_WhenBodyIsInvalid_ShouldReturnProblemDetails()
     {
         // Arrange
         var client = _factory.CreateHttpClient();
-        var request = new UpdateOrderCommand(string.Empty, string.Empty, OrderStatus.PendingPayment.Value);
+        var request = new PatchOrderCommand(string.Empty, string.Empty, OrderStatus.PendingPayment.Value);
         var cancellationToken = TestContext.Current.CancellationToken;
 
         // Act

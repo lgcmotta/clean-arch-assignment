@@ -1,25 +1,26 @@
 using HashidsNet;
 using MediatR;
+using OrderManagement.Domain.Aggregates.Orders.Entities;
 using OrderManagement.Domain.Aggregates.Orders.Exceptions;
 using OrderManagement.Domain.Aggregates.Orders.Repositories;
 using OrderManagement.Domain.Aggregates.Products.Repositories;
 
-namespace OrderManagement.Application.Commands.Orders.Update;
+namespace OrderManagement.Application.Commands.Orders.Patch;
 
-internal sealed class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, UpdateOrderResponse>
+internal sealed class PatchOrderCommandHandler : IRequestHandler<PatchOrderCommand, PatchOrderResponse>
 {
     private readonly IOrderWriteRepository _orders;
     private readonly IProductWriteRepository _products;
     private readonly IHashids _hashids;
 
-    public UpdateOrderCommandHandler(IOrderWriteRepository orders, IProductWriteRepository products, IHashids hashids)
+    public PatchOrderCommandHandler(IOrderWriteRepository orders, IProductWriteRepository products, IHashids hashids)
     {
         _orders = orders;
         _products = products;
         _hashids = hashids;
     }
 
-    public async Task<UpdateOrderResponse> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<PatchOrderResponse> Handle(PatchOrderCommand request, CancellationToken cancellationToken)
     {
         var customerId = _hashids.DecodeSingleLong(request.CustomerId);
 
@@ -67,6 +68,26 @@ internal sealed class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCom
 
         order.RaiseOrderUpdatedEvent();
 
-        return new UpdateOrderResponse(request.OrderId, request.CustomerId, order.Status.Value);
+        PatchOrderItemResponse[] items = [..order.Items.Select(item => item.ToResponse(_hashids))];
+
+        return new PatchOrderResponse(request.OrderId, request.CustomerId, order.Status.Value, items);
+    }
+}
+
+file static class PatchOrderItemExtensions
+{
+    extension(OrderItem item)
+    {
+        internal PatchOrderItemResponse ToResponse(IHashids hashids)
+        {
+            return new PatchOrderItemResponse
+            {
+                Quantity = item.Quantity,
+                TotalPrice = item.TotalPrice,
+                UnitPrice = item.UnitPrice,
+                ProductId = hashids.EncodeLong(item.ProductId),
+                ProductName = item.ProductName,
+            };
+        }
     }
 }

@@ -1,12 +1,12 @@
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace OrderManagement.Application.Commands.Orders.Update;
+namespace OrderManagement.Application.Commands.Orders.Patch;
 
 [UsedImplicitly]
-public sealed class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
+public sealed class PatchOrderCommandValidator : AbstractValidator<PatchOrderCommand>
 {
-    public UpdateOrderCommandValidator()
+    public PatchOrderCommandValidator()
     {
         RuleFor(command => command.CustomerId)
             .NotEmpty()
