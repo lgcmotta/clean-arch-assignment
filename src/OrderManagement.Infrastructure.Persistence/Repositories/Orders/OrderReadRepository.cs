@@ -71,7 +71,12 @@ public class OrderReadRepository(IMongoClient mongo) : IOrderReadRepository
 
     public async ValueTask SyncOrderUpdatedAsync(OrderReadModel model, CancellationToken cancellationToken = default)
     {
-        var filter = Builders<OrderDocument>.Filter.Eq(doc => doc.ExternalId, model.Id);
+        var filter = Builders<OrderDocument>.Filter.And(filters:
+            [
+                Builders<OrderDocument>.Filter.Eq(doc => doc.Customer.Id, model.Customer.Id),
+                Builders<OrderDocument>.Filter.Eq(doc => doc.ExternalId, model.Id)
+            ]
+        );
 
         var objectId = await _collection.Find(filter).Project(document => document.Id).SingleOrDefaultAsync(cancellationToken);
 
