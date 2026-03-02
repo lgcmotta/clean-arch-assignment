@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandling();
 builder.Services.AddMongoDbClient();
 builder.Services.AddAppDbContext();
@@ -43,6 +44,7 @@ api.MapPostProducts(v1);
 api.MapGetProducts(v1);
 api.MapPostOrders(v1);
 api.MapPatchOrders(v1);
+api.MapDeleteOrderItem(v1);
 api.MapDeleteOrders(v1);
 api.MapGetOrders(v1);
 api.MapPostCustomer(v1);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Application.Commands.Orders.Cancel;
 using OrderManagement.Application.Commands.Orders.Create;
 using OrderManagement.Application.Commands.Orders.Patch;
+using OrderManagement.Application.Commands.Orders.RemoveItem;
 using OrderManagement.WebApi.Responses;
 using System.Net.Mime;
 
@@ -30,7 +31,7 @@ internal static class OrderWriteEndpoints
 
         internal IEndpointRouteBuilder MapPatchOrders(ApiVersion version)
         {
-            builder.MapPatch("customers/{customerId}/orders/{orderId}", UpdateOrderAsync)
+            builder.MapPatch("customers/{customerId}/orders/{orderId}", PatchOrderAsync)
                 .WithName($"patch-v{version:V}-update-order")
                 .WithDisplayName("Update Order")
                 .WithTags("orders")
@@ -39,6 +40,21 @@ internal static class OrderWriteEndpoints
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status404NotFound, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status409Conflict, contentType: MediaTypeNames.Application.ProblemJson)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
+
+            return builder;
+        }
+
+        internal IEndpointRouteBuilder MapDeleteOrderItem(ApiVersion version)
+        {
+            builder.MapPatch("customers/{customerId}/orders/{orderId}/products/{productId}", RemoveOrderItemAsync)
+                .WithName($"delete-v{version:V}-remove-order-item")
+                .WithDisplayName("Remove Order Item")
+                .WithTags("orders")
+                .MapToApiVersion(version)
+                .Produces<ApiResponse<OrderItemRemovedResponse>>(contentType: MediaTypeNames.Application.Json)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status400BadRequest, contentType: MediaTypeNames.Application.ProblemJson)
+                .Produces<ProblemDetails>(statusCode: StatusCodes.Status404NotFound, contentType: MediaTypeNames.Application.ProblemJson)
                 .Produces<ProblemDetails>(statusCode: StatusCodes.Status500InternalServerError, contentType: MediaTypeNames.Application.ProblemJson);
 
             return builder;
@@ -69,7 +85,7 @@ internal static class OrderWriteEndpoints
             return Results.Created($"/customers/{response.CustomerId}/orders/{response.Id}", new ApiResponse<CreateOrderResponse>(response));
         }
 
-        private static async Task<IResult> UpdateOrderAsync(
+        private static async Task<IResult> PatchOrderAsync(
             [FromServices] IMediator mediator,
             [FromRoute] string customerId,
             [FromRoute] string orderId,
@@ -79,6 +95,18 @@ internal static class OrderWriteEndpoints
             var response = await mediator.Send(command, cancellationToken);
 
             return Results.Ok(new ApiResponse<PatchOrderResponse>(response));
+        }
+
+        private static async Task<IResult> RemoveOrderItemAsync(
+            [FromServices] IMediator mediator,
+            [FromRoute] string customerId,
+            [FromRoute] string orderId,
+            [FromRoute] string productId,
+            CancellationToken cancellationToken = default)
+        {
+            var response = await mediator.Send(new RemoveOrderItemCommand(customerId, orderId, productId), cancellationToken);
+
+            return Results.Ok(new ApiResponse<OrderItemRemovedResponse>(response));
         }
 
         private static async Task<IResult> CancelOrderAsync(

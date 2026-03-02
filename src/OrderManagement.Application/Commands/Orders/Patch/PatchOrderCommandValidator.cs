@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace OrderManagement.Application.Commands.Orders.Patch;
 
 [UsedImplicitly]
-public sealed class PatchOrderCommandValidator : AbstractValidator<PatchOrderCommand>
+internal sealed class PatchOrderCommandValidator : AbstractValidator<PatchOrderCommand>
 {
     public PatchOrderCommandValidator()
     {
